@@ -2,7 +2,6 @@ import requests
 import sqlite3
 from datetime import date, timedelta
 from collections import Counter
-import matplotlib.pyplot as plt
 import re
 
 # === CONFIG ===
@@ -86,7 +85,7 @@ def insert_neos(conn, neos):
     conn.commit()
 
 
-# === STEP 3: วิเคราะห์ข้อมูลแบบ SQL + Python + กราฟ ===
+# === STEP 3: วิเคราะห์ข้อมูลด้วย SQL + Python  ===
 def run_analytics(conn):
     cur = conn.cursor()
 
@@ -116,7 +115,7 @@ def run_analytics(conn):
     result = cur.fetchone()
     print(f"  → Name: {result[0]}\n    Max Diameter: {result[1]:,.2f} meters")
 
-    print("\n📅 6. สถิติการเข้าใกล้แยกตามวัน:")
+    print("\n📅 6. จำนวน NEOs แต่ละวัน:")
     approach_counts = []
     print("\n  | Date       | Number of NEOs |")
     print("  |------------|----------------|")
@@ -132,18 +131,6 @@ def run_analytics(conn):
     )
     row = cur.fetchone()
     print(f"  → Date: {row[0]}\n    Number of NEOs: {row[1]}")
-
-    # === กราฟ: จำนวน NEO ต่อวัน ===
-    dates = [r[0] for r in approach_counts]
-    counts = [r[1] for r in approach_counts]
-    plt.figure(figsize=(10, 5))
-    plt.bar(dates, counts)
-    plt.title("Number of NEOs Approaching Earth Per Day")
-    plt.xlabel("Date")
-    plt.ylabel("Number of Objects")
-    plt.xticks(rotation=45)
-    plt.tight_layout()
-    plt.show()
 
 
 # === MAIN ===
