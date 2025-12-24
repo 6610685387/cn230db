@@ -135,14 +135,11 @@ def run_analytics(conn):
 
 # === MAIN ===
 def main():
-    print("📡 Fetching data from NASA API...")
     neos = fetch_neos(API_KEY, DAYS_BACK)
-    print(f"✅ Retrieved {len(neos)} NEOs")
 
     conn = sqlite3.connect(DB_NAME)
     create_table(conn)
     insert_neos(conn, neos)
-    print("📊 Running analytics:")
     run_analytics(conn)
     conn.close()
 
